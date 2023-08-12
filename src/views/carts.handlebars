@@ -1,0 +1,45 @@
+<html>
+<head>
+  <title>Carrito de compras</title>
+</head>
+<body>
+  <a href="/api/products">Productos</a>
+<form action="/api/session/logout" method="GET">
+  <button type="submit">Cerrar sesión</button>
+</form>
+
+  <h1>Carrito de compras</h1>
+  {{#each cart}}
+  <h2>Carrito {{_id}}</h2>
+  <ul>
+    {{#each products}}
+    <div>
+      Producto ID: {{productId._id}} <br>
+    Título: {{productId.title}} <br>
+    Cantidad: {{quantity}} <br>
+    Stock Disponible: {{productId.stock}}
+
+      <!-- Formulario para modificar la cantidad -->
+      <form action="/api/carts/update-quantity" method="POST">
+        <input type="hidden" name="cartId" value="{{../_id}}">
+        <input type="hidden" name="productId" value="{{this.productId._id}}">
+        <input type="number" name="quantity" value="{{this.quantity}}">
+        <button type="submit">Actualizar Cantidad</button>
+      </form>
+
+      <!-- Formulario para eliminar el producto -->
+      <form action="/api/carts/remove-from-cart" method="POST">
+        <input type="hidden" name="cartId" value="{{../_id}}">
+        <input type="hidden" name="productId" value="{{this.productId._id}}">
+        <button type="submit">Eliminar Producto</button>
+      </form>
+    </div>
+    <hr>
+    {{/each}}
+  </ul>
+  {{/each}}
+  <form action="/api/carts/purchase" method="GET">
+    <button type="submit">Comprar</button>
+  </form>
+</body>
+</html>
