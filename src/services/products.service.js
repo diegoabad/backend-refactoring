@@ -1,5 +1,6 @@
 import productManager from "../dao/manager/products.manager.js";
 import productModel from "../dao/models/product.model.js";
+import logger from "../utils/logger.js";
 
 export const getProductsService = async (
   page = 1,
@@ -27,8 +28,10 @@ export const getProductsService = async (
     const products = await productModel.paginate(filter, options);
     return products;
   } catch (err) {
-    throw new Error("An error occurred while getting the products");
-  }
+    logger.error(`
+    An error occurred when obtaining products.
+    ${err.stack}  
+  `)}
 };
 
 export const createProductService = async (productData) => {
@@ -36,6 +39,8 @@ export const createProductService = async (productData) => {
     const product = await productManager.createProduct(productData);
     return product;
   } catch (err) {
-    throw new Error("An error occurred while creating the product");
-  }
+    logger.error(`
+    An error occurred while creating the product
+    ${err.stack}  
+  `)}
 };

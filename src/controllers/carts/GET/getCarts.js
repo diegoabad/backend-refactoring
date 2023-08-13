@@ -15,7 +15,10 @@ export const getCarts = async (req, res) => {
     }
     res.render("carts", { cart: [cart] });
   } catch (err) {
-    logger.error("An error occurred when obtaining the carts\n", err);
+    logger.error(`
+      An error occurred when obtaining the carts
+      ${err.stack}  
+    `);
     res.status(500).json({ err: "An error occurred when obtaining the carts" });
   }
 };
@@ -38,7 +41,10 @@ export const getPurchase = async (req, res) => {
       res.status(200).render("purchase", { purchase, ticket });
     }
   } catch (err) {
-    logger.error("An error occurred when obtaining the purchase\n", err);
+    logger.error(`
+    An error occurred when obtaining the purchase
+    ${err.stack}  
+  `);
     res
       .status(500)
       .json({ err: "An error occurred when obtaining the purchase" });

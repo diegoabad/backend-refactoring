@@ -11,7 +11,11 @@ export const getPurchase = async (req, res) => {
     const purchase = purchases;
 
     if (!purchase || !purchase.products || purchase.products.length === 0) {
-      logger.warning("The purchase is empty");
+      logger.error(`
+        The purchase is empty
+        ${err.stack}  
+      `);
+
       return res.status(400).render("errors/purchaseErr", {
         message: "The purchase is empty",
       });
@@ -21,7 +25,10 @@ export const getPurchase = async (req, res) => {
 
     res.status(200).render("purchase", { purchase, ticket });
   } catch (err) {
-    logger.error("An error occurred when obtaining the purchase\n", err);
+    logger.error(`
+      An error occurred when obtaining the purchase
+      ${err.stack}  
+    `);
     res
       .status(500)
       .json({ err: "An error occurred when obtaining the purchase" });

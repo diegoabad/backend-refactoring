@@ -18,7 +18,10 @@ export const updateCartQty = async (req, res) => {
 
     res.redirect("/api/carts");
   } catch (err) {
-    logger.error("An error occurred while updating the product quantity\n", err);
+    logger.error(`
+      An error occurred while updating the product quantity
+      ${err.stack}  
+    `);
     res.status(500).json({
       error: "An error occurred while updating the product quantity.",
     });

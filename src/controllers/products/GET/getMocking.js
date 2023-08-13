@@ -31,7 +31,10 @@ export const getMocking = async (req, res) => {
 
     res.status(201).render("mocking", data);
   } catch (err) {
-    logger.error("An error occurred while getting the products\n", err)
+    logger.error(`
+      An error occurred while getting the products
+      ${err.stack}  
+    `);
     res
       .status(500)
       .json({ err: "An error occurred while getting the products" });

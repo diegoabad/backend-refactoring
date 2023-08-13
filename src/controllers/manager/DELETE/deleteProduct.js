@@ -9,10 +9,10 @@ export const deleteProduct = async (req, res) => {
     logger.info(`Product ${product.title} deleted`);
     res.redirect("/api/products");
   } catch (err) {
-    logger.error(
-      "An error occurred while deleting the product from database\n",
-      err
-    );
+    logger.error(`
+      An error occurred while deleting the product from database
+      ${err.stack}  
+    `);
     res.status(500).json({
       err: "An error occurred while deleting the product from the database.",
     });

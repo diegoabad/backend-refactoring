@@ -12,10 +12,10 @@ export const removeFromCart = async (req, res) => {
 
     res.redirect("/api/products");
   } catch (err) {
-    logger.error(
-      "An error occurred while removing the product from the cart\n",
-      err
-    );
+    logger.error(`
+      An error occurred while removing the product from the cart
+      ${err.stack}  
+    `);
     res.status(500).json({
       error: "An error occurred while removing the product from the cart.",
     });

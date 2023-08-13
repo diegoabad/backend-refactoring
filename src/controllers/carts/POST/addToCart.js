@@ -11,16 +11,13 @@ export const addToCart = async (req, res) => {
 
     res.redirect("/api/products");
   } catch (err) {
-    logger.error(
-      "An error occurred while adding the product to the cart\n",
-      err
-    );
-    res
-      .status(500)
-      .json({
-        err:
-          err.message ||
-          "An error occurred while adding the product to the cart",
-      });
+    logger.error(`
+      An error occurred while adding the product to the cart
+      ${err.stack}  
+    `);
+    res.status(500).json({
+      err:
+        err.message || "An error occurred while adding the product to the cart",
+    });
   }
 };
