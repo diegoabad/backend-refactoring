@@ -19,12 +19,13 @@ import { generateProductsMocking, roleAccess } from "./utils/utils.js";
 import { ServerUp } from "./dto/persistanceFactory.js";
 import { generateProducts } from "./utils/utils.js";
 import errorHandler from "./middleware/error.middleware.js";
+import error404 from "./middleware/404.middleware.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-app.disable('x-powered-by');
+app.disable("x-powered-by");
 app.use(errorHandler);
 
 const swaggerOptions = {
@@ -35,7 +36,7 @@ const swaggerOptions = {
       description: "Documentation of routing products and carts",
     },
   },
-  apis: ['./docs/**/*.yaml']
+  apis: ["./docs/**/*.yaml"],
 };
 
 const specs = swaggerJSDoc(swaggerOptions);
@@ -73,7 +74,8 @@ app.use("/api/products", ensureAuthenticated, roleAccess, productsRouter);
 app.use("/api/carts", ensureAuthenticated, roleAccess, cartsRouter);
 app.use("/api/session", sessionRouter);
 app.use("/api/loggerTest", loggerTest);
-app.use('/docs', SwaggerUiExpress.serve, SwaggerUiExpress.setup(specs));
+app.use("/docs", SwaggerUiExpress.serve, SwaggerUiExpress.setup(specs));
+app.use(error404);
 
 // mocking products
 generateProductsMocking();
