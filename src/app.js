@@ -31,7 +31,7 @@ const swaggerOptions = {
   definition: {
     openapi: "3.0.1",
     info: {
-      title: "API documentation - Desafio 10",
+      title: "API documentation - Refactoring",
       description: "Documentation of routing products and carts",
     },
   },
