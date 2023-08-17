@@ -96,7 +96,8 @@ router.post("/forgot-password", async (req, res) => {
   const email = req.body.email;
   const user = await UserModel.findOne({ email });
   if (!user) {
-    return res.status(404).json({ status: "error", error: "User not found" });
+    logger.error("User not found - /forgot-password");
+    return res.status(404).render("errors/404");
   }
   const token = generateRandomString(16);
   await UserPasswordModel.create({ email, token });
@@ -142,12 +143,10 @@ router.post("/forgot-password", async (req, res) => {
   };
   try {
     transporter.sendMail(message);
-    res.json({
-      status: "success",
-      message: `Email successfully sent to ${email}`,
-    });
+    res.render("sessions/send-token", { email });
   } catch (err) {
-    res.status(500).json({ status: "error", message: err.message });
+    logger.error("Error in send token\n", err);
+    res.render("errors/404");
   }
 });
 
@@ -160,9 +159,10 @@ router.get("/verify-token/:token", async (req, res) => {
     token: req.params.token,
   });
   if (!userPassword) {
-    return res
-      .status(404)
-      .json({ status: "error", error: "Token not found / Token has expired" });
+    return (
+      logger.error("Token verification error - /verify-token"),
+      res.render("sessions/token-error")
+    );
   }
   const user = userPassword.email;
   res.render("sessions/resetPassword", { user });
@@ -174,11 +174,12 @@ router.post("/reset-password/:user", async (req, res) => {
     await UserModel.findByIdAndUpdate(user, {
       password: createHash(req.body.password),
     });
-    res.json({ status: "success", message: "Password updated successfully" });
+    logger.info("Password reset success");
+    res.render("sessions/reset-success");
     await UserPasswordModel.deleteOne({ email: req.params.user }); // cambiar por isUsed
   } catch (err) {
     logger.error("Error in reset password\n", err);
-    res.json({ status: "error", error: "Something went wrong" });
+    res.render("errors/404");
   }
 });
 
