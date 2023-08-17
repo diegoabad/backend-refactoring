@@ -1,6 +1,12 @@
 import { Router } from "express";
 import passport from "passport";
 import logger from "../utils/logger.js";
+import UserModel from "../dao/models/user.model.js";
+import { createHash, generateRandomString } from "../utils/utils.js";
+import UserPasswordModel from "../dao/models/userPassword.model.js";
+import nodemailer from "nodemailer";
+import { GMAIL_CONFIG, PORT } from "../config/config.js";
+import mailgen from "mailgen";
 
 const router = Router();
 
@@ -16,7 +22,7 @@ router.post(
     failureRedirect: "/session/failureRegister",
   }),
   async (req, res) => {
-    logger.info("POST /session/register success")
+    logger.info("POST /session/register success");
     res.redirect("/api/session/login");
   }
 );
@@ -35,8 +41,8 @@ router.post(
   async (req, res) => {
     if (!req.user) {
       return res
-      .status(400)
-      .send({ status: "error", error: "Invalid credentials" });
+        .status(400)
+        .send({ status: "error", error: "Invalid credentials" });
     }
     req.session.user = {
       first_name: req.user.first_name,
@@ -45,8 +51,8 @@ router.post(
       age: req.user.age,
     };
 
-    logger.info("Login success")
-    
+    logger.info("Login success");
+
     res.redirect("/api/products");
   }
 );
@@ -61,7 +67,7 @@ router.get("/logout", async (req, res) => {
       logger.error("Error in logout\n", err);
       res.status(500).render("errors/base", { error: err });
     } else {
-      logger.info("Logout success")
+      logger.info("Logout success");
       res.redirect("/api/session/login");
     }
   });
@@ -81,4 +87,99 @@ router.get(
     res.redirect("/api/products");
   }
 );
+
+router.get("/forgot-password", async (req, res) => {
+  res.render("sessions/forgotPassword");
+});
+
+router.post("/forgot-password", async (req, res) => {
+  const email = req.body.email;
+  const user = await UserModel.findOne({ email });
+  if (!user) {
+    return res.status(404).json({ status: "error", error: "User not found" });
+  }
+  const token = generateRandomString(16);
+  await UserPasswordModel.create({ email, token });
+
+  const mailerConfig = {
+    service: "gmail",
+    auth: { user: GMAIL_CONFIG.user, pass: GMAIL_CONFIG.pass },
+  };
+
+  let transporter = nodemailer.createTransport(mailerConfig);
+
+  const Mailgenerator = new mailgen({
+    theme: "default",
+    product: {
+      name: "e-commerce API",
+      link: "http://localhost:8080/api/products",
+    },
+  });
+
+  const response = {
+    body: {
+      name: email,
+      intro: "Welcome to password recovery",
+      action: {
+        instructions:
+          "To reset your password, please click on the following button:",
+        button: {
+          color: "#036992",
+          text: "Change your password",
+          link: `http://localhost:${PORT}/api/session/verify-token/${token}`,
+        },
+      },
+      outro: "If it wasn't you, ignore this email.",
+    },
+  };
+  const mail = Mailgenerator.generate(response);
+
+  let message = {
+    from: GMAIL_CONFIG.user,
+    to: email,
+    subject: "[e-commerce API] Reset your password",
+    html: mail,
+  };
+  try {
+    transporter.sendMail(message);
+    res.json({
+      status: "success",
+      message: `Email successfully sent to ${email}`,
+    });
+  } catch (err) {
+    res.status(500).json({ status: "error", message: err.message });
+  }
+});
+
+router.get("/reset-password/:token", async (req, res) => {
+  res.redirect(`api/session/verify-token/${req.params.token}`);
+});
+
+router.get("/verify-token/:token", async (req, res) => {
+  const userPassword = await UserPasswordModel.findOne({
+    token: req.params.token,
+  });
+  if (!userPassword) {
+    return res
+      .status(404)
+      .json({ status: "error", error: "Token not found / Token has expired" });
+  }
+  const user = userPassword.email;
+  res.render("sessions/resetPassword", { user });
+});
+
+router.post("/reset-password/:user", async (req, res) => {
+  try {
+    const user = await UserModel.findOne({ email: req.params.user });
+    await UserModel.findByIdAndUpdate(user, {
+      password: createHash(req.body.password),
+    });
+    res.json({ status: "success", message: "Password updated successfully" });
+    await UserPasswordModel.deleteOne({ email: req.params.user }); // cambiar por isUsed
+  } catch (err) {
+    logger.error("Error in reset password\n", err);
+    res.json({ status: "error", error: "Something went wrong" });
+  }
+});
+
 export default router;

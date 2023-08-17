@@ -71,3 +71,13 @@ export const generateProducts = async (req, res) => {
     createProductsDB();
   }
 };
+
+export const generateRandomString = (num) => { // el argumento trae la cantidad (16)
+  return [...Array(num)] // crea un array de 16 elementos
+    .map(() => { // mapea cada elemento para cambiarlo
+      const randomNum = ~~(Math.random() * 36); // ~~ convierte a entero
+      return randomNum.toString(36); // convierte a string
+    })
+    .join("") // unir todos los elementos
+    .toUpperCase();
+};

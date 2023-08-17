@@ -12,3 +12,7 @@ export const PORT = process.env.PORT;
 export const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
 export const ADMIN_PW = process.env.ADMIN_PW;
 export const PERSISTANCE = process.env.PERSISTANCE;
+export const GMAIL_CONFIG = {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PW
+}
