@@ -1,7 +1,7 @@
 import productModel from "../dao/models/product.model.js";
 import logger from "../utils/logger.js";
 
-export const createProduct = async function createProduct(productData) {
+export const createProduct = async function createProduct(productData, ownerEmail) {
   const {
     title,
     description,
@@ -31,6 +31,7 @@ export const createProduct = async function createProduct(productData) {
     stock,
     category,
     thumbnail,
+    owner: ownerEmail,
   });
 
   await product.save();

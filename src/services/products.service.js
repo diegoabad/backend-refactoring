@@ -34,9 +34,9 @@ export const getProductsService = async (
   `)}
 };
 
-export const createProductService = async (productData) => {
+export const createProductService = async (productData, ownerEmail) => {
   try {
-    const product = await productManager.createProduct(productData);
+    const product = await productManager.createProduct(productData, ownerEmail);
     return product;
   } catch (err) {
     logger.error(`
