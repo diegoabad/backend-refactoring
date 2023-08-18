@@ -1,4 +1,4 @@
-<h1>Registrar Usuarios</h1>
+<h1>Sign up</h1>
 
 <form action="/api/session/register" method="post">
 
@@ -12,13 +12,17 @@
   <input type="text" name="age" /><br />
   Password:
   <input type="password" name="password" /><br />
-
+  Role:
+  <select name="role">
+    <option value="user">User</option>
+    <option value="premium">Premium</option>
+  </select><br />
   <br />
 
-  <input type="submit" value="Crear" />
+  <input type="submit" value="Sing up" />
 
 </form>
 <hr />
 <br />
-¿Ya tenes cuenta?
-<a href="/api/session/login">Inicia Sesion</a>
+Do you already have an account?
+<a href="/api/session/login">Login</a>

@@ -45,7 +45,7 @@ const initializePassport = () => {
             email,
             password: hashedPassword,
             cart: cartForNewUser._id,
-            role: email === ADMIN_EMAIL ? "admin" : "user",
+            role: email === ADMIN_EMAIL ? "admin" : req.body.role,
           };
 
           const result = await UserModel.create(newUser);
