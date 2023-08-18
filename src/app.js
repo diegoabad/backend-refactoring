@@ -15,7 +15,7 @@ import sessionRouter from "./routers/session.router.js";
 import loggerTest from "./routers/loggerTest.router.js";
 import initializePassport from "./config/passport.config.js";
 import { MONGO_DB_NAME, MONGO_URI } from "./config/config.js";
-import { generateProductsMocking, roleAccess } from "./utils/utils.js";
+import { generateProductsMocking } from "./utils/utils.js";
 import { ServerUp } from "./dto/persistanceFactory.js";
 import { generateProducts } from "./utils/utils.js";
 import errorHandler from "./middleware/error.middleware.js";
@@ -70,8 +70,8 @@ const ensureAuthenticated = (req, res, next) => {
   res.redirect("/api/session/login");
 };
 
-app.use("/api/products", ensureAuthenticated, roleAccess, productsRouter);
-app.use("/api/carts", ensureAuthenticated, roleAccess, cartsRouter);
+app.use("/api/products", ensureAuthenticated, productsRouter);
+app.use("/api/carts", ensureAuthenticated, cartsRouter);
 app.use("/api/session", sessionRouter);
 app.use("/api/loggerTest", loggerTest);
 app.use("/docs", SwaggerUiExpress.serve, SwaggerUiExpress.setup(specs));

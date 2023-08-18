@@ -13,34 +13,6 @@ export const isValidPassword = (user, password) => {
   return bcrypt.compareSync(password, user.password);
 };
 
-export const isAdmin = (req, res, next) => {
-  const user = req.user;
-  let isAdminUser = false;
-
-  if (user.role == "admin") {
-    isAdminUser = true;
-    next();
-  } else {
-    res.status(403).render("errors/accessDeniedErr", {
-      message: "Access Denied",
-    });
-  }
-};
-
-export const roleAccess = (req, res, next) => {
-  const user = req.user;
-  let isAdminUser = false;
-
-  if (user.role == "admin") {
-    isAdminUser = true;
-  }
-
-  res.locals = {
-    isAdminUser,
-  };
-  next();
-};
-
 export const generateProductsMocking = async () => {
   const existMocking = await MockingModel.countDocuments();
 
