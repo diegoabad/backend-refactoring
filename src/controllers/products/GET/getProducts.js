@@ -7,6 +7,18 @@ export const getProducts = async (req, res) => {
   const limit = parseInt(req.query.limit) || 10;
   const sort = req.query.sort === "desc" ? -1 : 1;
   const query = req.query.query || "";
+  const manager = req.params.manager || "";
+
+  const renderingPage = manager === "manager" ? "manager" : "products";
+  if (
+    renderingPage === "manager" &&
+    user.role !== "admin" &&
+    user.role !== "premium"
+  ) {
+    return res.status(403).render("errors/accessDeniedErr", {
+      message: "Access Denied",
+    });
+  }
 
   logger.http("GET /api/products");
 
@@ -29,7 +41,7 @@ export const getProducts = async (req, res) => {
 
     Object.assign(data, req.query);
 
-    res.status(201).render("products", data);
+    res.status(201).render(renderingPage, data);
   } catch (err) {
     logger.error(`
       An error occurred while getting the products.

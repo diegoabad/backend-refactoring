@@ -4,14 +4,16 @@ import { productManager } from "../controllers/manager/product.manager.controlle
 import logger from "../utils/logger.js";
 import { isPremium } from "../middleware/premium.middleware.js";
 
-const router = Router();
 
-router.get("/", productController.getProducts);
+const router = Router();
 
 router.get("/create", isPremium, async (req, res) => {
   logger.http("GET /create");
   res.render("create");
 });
+
+router.get("/:manager?", productController.getProducts);
+
 
 router.post("/", productController.createProduct);
 
