@@ -7,7 +7,9 @@
   |
   <a href="/api/carts">Cart</a>
   |
-    <a href="/api/products/create">Create product</a>
+  <a href="/api/products/create">Create product</a>
+  |
+  <a href="/api/products/manager">Manage products</a>
 </form>
 
 <form action="/api/session/logout" method="GET">
@@ -25,23 +27,15 @@
       <p>Stock: {{this.stock}}</p>
       <h3>Price: $ {{this.price}}</h3>
 
-      <!-- Botón para agregar producto al carrito -->
       <form action="/api/carts/add-to-cart" method="POST">
         <input type="hidden" name="productId" value="{{this._id}}" />
         <button type="submit">Add to cart</button>
       </form>
 
-      <!-- Botón para eliminar producto del carrito -->
       <form action="/api/carts/remove-from-cart" method="POST">
         <input type="hidden" name="productId" value="{{this._id}}" />
         <button type="submit">Remove from cart</button>
       </form>
-      {{#if isAdminUser}}
-        <form action="/api/products/delete-product" method="POST">
-          <input type="hidden" name="productId" value="{{this._id}}" />
-          <button type="submit">¡¡Remove product!!</button>
-        </form>
-      {{/if}}
     </div>
     <hr />
   {{/each}}
