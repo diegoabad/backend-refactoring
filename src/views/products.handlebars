@@ -26,6 +26,7 @@
       <p>{{this.category}}</p>
       <p>Stock: {{this.stock}}</p>
       <h3>Price: $ {{this.price}}</h3>
+      <p>Owner: {{this.owner}}</p>
 
       <form action="/api/carts/add-to-cart" method="POST">
         <input type="hidden" name="productId" value="{{this._id}}" />
