@@ -1,10 +1,19 @@
 import { addToCartService } from "../../../services/carts.service.js";
+import productModel from "../../../dao/models/product.model.js";
 import logger from "../../../utils/logger.js";
 
 export const addToCart = async (req, res) => {
   const { productId } = req.body;
   const userId = req.user.id;
+  const userRole = req.user.role;
+
   try {
+    const product = await productModel.findById(productId);
+
+    if (userRole === "admin" || req.user.email === product.owner) {
+      return res.status(403).render("errors/owner-admin");
+    }
+
     const cart = await addToCartService(productId, userId);
 
     logger.info(`Product ${productId} added to cart`);
