@@ -13,6 +13,7 @@ import productsRouter from "./routers/products.router.js";
 import cartsRouter from "./routers/carts.router.js";
 import sessionRouter from "./routers/session.router.js";
 import loggerTest from "./routers/loggerTest.router.js";
+import usersRouter from "./routers/users.router.js";
 import initializePassport from "./config/passport.config.js";
 import { MONGO_DB_NAME, MONGO_URI } from "./config/config.js";
 import { generateProductsMocking } from "./utils/utils.js";
@@ -74,6 +75,7 @@ app.use("/api/products", ensureAuthenticated, productsRouter);
 app.use("/api/carts", ensureAuthenticated, cartsRouter);
 app.use("/api/session", sessionRouter);
 app.use("/api/loggerTest", loggerTest);
+app.use("/api/users", ensureAuthenticated, usersRouter);
 app.use("/docs", SwaggerUiExpress.serve, SwaggerUiExpress.setup(specs));
 app.use(error404);
 

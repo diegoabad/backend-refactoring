@@ -12,7 +12,7 @@ export const addToCart = async (req, res) => {
 
     if (userRole === "admin" || req.user.email === product.owner) {
       logger.warning(
-        "Cannot add your own product | admin users cannot add products to the cart"
+        "Cannot add your own product | admin users cannot add products to cart"
       );
       return res.status(403).render("errors/owner-admin");
     }
