@@ -1,3 +1,5 @@
+import UserModel from "../dao/models/user.model.js";
+
 export const getUserService = async (user) => {
   const userData = {
     email: user.email,
@@ -8,3 +10,4 @@ export const getUserService = async (user) => {
 
   return userData;
 };
+

@@ -5,4 +5,6 @@ const router = Router();
 
 router.get("/", usersController.getUser);
 
+router.post("/roles", usersController.changeRole);
+
 export default router;
