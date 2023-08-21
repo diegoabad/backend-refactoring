@@ -16,6 +16,8 @@ router.get('/update-product/:productId', productManager.getProductsManager);
 
 router.get("/:manager?", productController.getProducts);
 
+router.post('/update-products/:productId', productManager.updateProduct);
+
 router.post("/", productController.createProduct);
 
 router.post("/delete-product", productManager.deleteProduct);
