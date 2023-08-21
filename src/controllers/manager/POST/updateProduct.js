@@ -3,11 +3,11 @@ import productModel from "../../../dao/models/product.model.js";
 export const updateProduct = async (req, res) => {
   const productId = req.params.productId;
   const updatedData = req.body;
-    
+
+
   try {
     const updatedProduct = await productModel.findByIdAndUpdate(
       productId,
-      owner,
       updatedData,
       { new: true }
       );
