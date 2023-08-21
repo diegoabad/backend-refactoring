@@ -12,8 +12,9 @@ router.get("/create", isPremium, async (req, res) => {
   res.render("create");
 });
 
-router.get("/:manager?", productController.getProducts);
+router.get('/update-product/:productId', productManager.getProductsManager);
 
+router.get("/:manager?", productController.getProducts);
 
 router.post("/", productController.createProduct);
 

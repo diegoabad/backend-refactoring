@@ -26,6 +26,10 @@
       <h3>Price: $ {{this.price}}</h3>
       <p>Owner: {{this.owner}}</p>
 
+      <form action="/api/products/update-product/{{this._id}}" method="GET">
+        <button type="submit">Update product</button>
+      </form>
+
       <form action="/api/products/delete-product" method="POST">
         <input type="hidden" name="productId" value="{{this._id}}" />
         <button type="submit">¡¡Remove product!!</button>
