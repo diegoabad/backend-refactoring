@@ -14,7 +14,8 @@ export const ServerUp = async (app) => {
     case "DEV":
       try {
         await mongoose.connect(MONGO_URI, {
-          dbName: MONGO_DB_NAME,
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
         });
         logger.debug("DB development connected!");
         app.listen(PORT, () =>
@@ -28,7 +29,8 @@ export const ServerUp = async (app) => {
     case "PROD":
       try {
         await mongoose.connect(ATLAS_URI, {
-          dbName: ATLAS_DB_NAME,
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
         });
         logger.debug("DB production connected!");
         app.listen(PORT, () =>
