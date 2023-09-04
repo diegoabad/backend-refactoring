@@ -16,7 +16,7 @@ import loggerTest from "./routers/loggerTest.router.js";
 import usersRouter from "./routers/users.router.js";
 import initializePassport from "./config/passport.config.js";
 import { MONGO_DB_NAME, MONGO_URI } from "./config/config.js";
-import { generateProductsMocking } from "./utils/utils.js";
+/* import { generateProductsMocking } from "./utils/utils.js"; */
 import { ServerUp } from "./dto/persistanceFactory.js";
 import { generateProducts } from "./utils/utils.js";
 import errorHandler from "./middleware/error.middleware.js";
@@ -80,7 +80,7 @@ app.use("/docs", SwaggerUiExpress.serve, SwaggerUiExpress.setup(specs));
 app.use(error404);
 
 // mocking products
-generateProductsMocking();
+/* generateProductsMocking(); */
 
 // DB products
 generateProducts();

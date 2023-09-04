@@ -13,7 +13,7 @@ export const isValidPassword = (user, password) => {
   return bcrypt.compareSync(password, user.password);
 };
 
-export const generateProductsMocking = async () => {
+/* export const generateProductsMocking = async () => {
   const existMocking = await MockingModel.countDocuments();
 
   if (!existMocking) {
@@ -33,7 +33,7 @@ export const generateProductsMocking = async () => {
     }
     logger.info("Generating products mocking");
   }
-};
+}; */
 
 export const generateProducts = async (req, res) => {
   const existProducts = await productModel.countDocuments();
