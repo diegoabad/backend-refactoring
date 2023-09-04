@@ -35,14 +35,14 @@ export const isValidPassword = (user, password) => {
   }
 }; */
 
-export const generateProducts = async (req, res) => {
+/* export const generateProducts = async (req, res) => {
   const existProducts = await productModel.countDocuments();
 
   if (!existProducts) {
     logger.info("Generating products");
     createProductsDB();
   }
-};
+}; */
 
 export const generateRandomString = (num) => { // el argumento trae la cantidad (16)
   return [...Array(num)] // crea un array de 16 elementos

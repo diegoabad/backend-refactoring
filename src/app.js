@@ -18,7 +18,7 @@ import initializePassport from "./config/passport.config.js";
 import { MONGO_DB_NAME, MONGO_URI } from "./config/config.js";
 /* import { generateProductsMocking } from "./utils/utils.js"; */
 import { ServerUp } from "./dto/persistanceFactory.js";
-import { generateProducts } from "./utils/utils.js";
+/* import { generateProducts } from "./utils/utils.js"; */
 import errorHandler from "./middleware/error.middleware.js";
 import error404 from "./middleware/404.middleware.js";
 
@@ -83,6 +83,6 @@ app.use(error404);
 /* generateProductsMocking(); */
 
 // DB products
-generateProducts();
+/* generateProducts(); */
 
 ServerUp(app);
